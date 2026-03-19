@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tasa Binance - Tasas de Cambio Venezuela</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 fallback */
+            color: #f8fafc;
+        }
+
+        /* Glassmorphism Effect Class */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Text Gradient Effect */
+        .gradient-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Animation Utilities */
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-500 { animation-delay: 0.5s; }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+
+        /* Back button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Imagen principal */
+        .main-image {
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .main-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Botones personalizados */
+        .btn-primary {
+            background: linear-gradient(to right, #0ea5e9, #6366f1);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #0284c7, #4f46e5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Feature cards */
+        .feature-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(30, 41, 59, 0.7);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(to right, #0ea5e9, #6366f1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-50 selection:bg-primary-500 selection:text-white overflow-x-hidden">
+
+        
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 top-0 left-0 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md transition-all duration-300" id="navbar">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          
+          <!-- Logo -->
+          <div class="flex items-center flex-shrink-0 cursor-pointer js-scroll-trigger" data-target="#hero">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-lg mr-2">
+               <i data-lucide="smartphone" class="text-white w-6 h-6"></i>
+            </div>
+                <a href="../index.html">
+                    <span class="font-bold text-xl">Innova<span class="text-primary-400">Apps</span></span>
+                </a>
+            
+          </div>
+          <!-- Desktop Menu -->
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-8">
+              <a href="../index.html" class="nav-link text-white bg-slate-800 px-3 py-2 rounded-md text-sm font-medium js-scroll-trigger">Inicio</a>
+            </div>
+          </div>
+          
+          <!-- Mobile Menu Button -->
+          <div class="-mr-2 flex md:hidden">
+            <a href="../index.html">
+                <button  class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none transition-colors" >
+                <i data-lucide="arrow-left" class="w-6 h-6" id="menu-icon"></i>
+                </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Imagen principal -->
+                <div class="animate-fade-in-up">
+                    <img src="img0.png" alt="Mi Tasa App" class="main-image w-full">
+                </div>
+
+                <!-- Contenido -->
+                <div class="animate-fade-in-up delay-100">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full border border-slate-700 bg-slate-800/50 backdrop-blur-sm mb-6">
+                        <span class="flex h-2 w-2 relative mr-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        <span class="text-sm text-slate-300 font-medium">App Oficial de Innova Apps</span>
+                    </div>
+
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+                        Mi Tasa <span class="gradient-text">Binance</span>
+                    </h1>
+
+                    <p class="mt-4 text-xl text-slate-400 mb-8 leading-relaxed">
+                        La mejor app para consultar tasas de cambio en Venezuela. Obtén información actualizada de USD, EURO, USDT y Bolívar Venezolano desde fuentes confiables como el BCV y Binance P2P.
+                    </p>
+
+                    <!-- Botones -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="https://play.google.com/store/apps/details?id=com.dolar.tasa_binance" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="btn-primary inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white md:text-lg">
+                            <i data-lucide="play" class="w-5 h-5 mr-2"></i>
+                            Descargar en Google Play
+                        </a>
+                        <a href="politica_privacidad.html" 
+                           class="btn-secondary inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white md:text-lg">
+                            <i data-lucide="shield" class="w-5 h-5 mr-2"></i>
+                            Políticas de Privacidad
+                        </a>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="mt-12 grid grid-cols-2 gap-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-600/20 rounded-full flex items-center justify-center">
+                                <i data-lucide="refresh-cw" class="w-5 h-5 text-primary-400"></i>
+                            </div>
+                            <span class="text-slate-300">Tasas en tiempo real</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-secondary-600/20 rounded-full flex items-center justify-center">
+                                <i data-lucide="lock" class="w-5 h-5 text-secondary-400"></i>
+                            </div>
+                            <span class="text-slate-300">100% Seguro</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-600/20 rounded-full flex items-center justify-center">
+                                <i data-lucide="cloud" class="w-5 h-5 text-primary-400"></i>
+                            </div>
+                            <span class="text-slate-300">Fuentes confiables</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-secondary-600/20 rounded-full flex items-center justify-center">
+                                <i data-lucide="smartphone" class="w-5 h-5 text-secondary-400"></i>
+                            </div>
+                            <span class="text-slate-300">Fácil de usar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Características Principales -->
+            <section class="mt-24 animate-fade-in-up delay-200">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                        <i data-lucide="rocket" class="w-10 h-10 text-primary-400 inline-block mr-3"></i>
+                        Características Principales
+                    </h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                        Todo lo que necesitas para gestionar tus finanzas en Venezuela con confianza
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Característica 1 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="dollar-sign" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Tasas Oficiales y de Mercado</h3>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-start">
+                                <i data-lucide="check" class="w-5 h-5 text-green-400 mt-1 mr-3 flex-shrink-0"></i>
+                                <span><strong>BCV:</strong> Sincronización directa con el Banco Central de Venezuela para Dólares y Euros</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="check" class="w-5 h-5 text-green-400 mt-1 mr-3 flex-shrink-0"></i>
+                                <span><strong>Binance P2P:</strong> Promedio real de compra/venta de USDT actualizado cada 10 minutos. ¡La tasa más precisa del mercado cripto!</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Característica 2 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="calculator" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Calculadora 4-en-1</h3>
+                        <p class="text-slate-300">
+                            Convierte simultáneamente entre las tres monedas principales y una tasa personalizada (MIA) que puedes ajustar según tus necesidades operativas.
+                        </p>
+                    </div>
+
+                    <!-- Característica 3 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="credit-card" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Perfiles de Pago Inteligentes</h3>
+                        <p class="text-slate-300">
+                            ¡Ahorra tiempo! Registra tus datos de Pago Móvil, Cuentas Bancarias o Zelle. Al compartir un cálculo, puedes adjuntar tu perfil de pago automáticamente.
+                        </p>
+                    </div>
+
+                    <!-- Característica 4 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="share-2" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Comparte en Segundos</h3>
+                        <p class="text-slate-300">
+                            Envía los cálculos detallados o el resumen de las tasas del día directamente a tus redes sociales (WhatsApp, Telegram, etc.) con un diseño limpio y profesional.
+                        </p>
+                    </div>
+
+                    <!-- Característica 5 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="trending-up" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Historial y Variación</h3>
+                        <p class="text-slate-300">
+                            Visualiza la tendencia del mercado con indicadores de subida o bajada de precios.
+                        </p>
+                    </div>
+
+                    <!-- Característica 6 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="zap" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Ligera y Rápida</h3>
+                        <p class="text-slate-300">
+                            Funciona de manera fluida incluso en conexiones inestables, optimizada para rendimiento.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección de Ventajas -->
+            <section class="mt-24 animate-fade-in-up delay-300">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                        <i data-lucide="briefcase" class="w-10 h-10 text-primary-400 inline-block mr-3"></i>
+                        ¿Por qué elegir Mi Tasa?
+                    </h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                        La herramienta perfecta para quienes necesitan precisión y velocidad en sus transacciones
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-3xl p-8 md:p-12">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Ventaja 1 -->
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-primary-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="clock" class="w-8 h-8 text-primary-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Precisión</h3>
+                            <p class="text-slate-300">Datos actualizados en tiempo real</p>
+                        </div>
+
+                        <!-- Ventaja 2 -->
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-secondary-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="activity" class="w-8 h-8 text-secondary-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Productividad</h3>
+                            <p class="text-slate-300">Diseñada para negocios que necesitan enviar presupuestos rápido</p>
+                        </div>
+
+                        <!-- Ventaja 3 -->
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-primary-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="sun" class="w-8 h-8 text-primary-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Diseño Moderno</h3>
+                            <p class="text-slate-300">Interfaz limpia y moderna con tema claro/oscuro</p>
+                        </div>
+
+                        <!-- Ventaja 4 -->
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-secondary-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="wifi" class="w-8 h-8 text-secondary-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white mb-2">Ligera y Rápida</h3>
+                            <p class="text-slate-300">Funciona fluida incluso en conexiones inestables</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Final -->
+            <section class="mt-24 text-center animate-fade-in-up delay-400">
+                <div class="glass-card rounded-3xl p-8 md:p-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                        Optimiza tu tiempo y tus finanzas
+                    </h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-3xl mx-auto">
+                        Descarga Mi Tasa: Binance USDT, USD, EUR hoy y lleva el control total del cambio de divisas en la palma de tu mano.
+                    </p>
+                    <a href="https://play.google.com/store/apps/details?id=com.dolar.tasa_binance" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="btn-primary inline-flex items-center justify-center px-10 py-5 text-lg font-semibold rounded-full text-white">
+                        <i data-lucide="play" class="w-6 h-6 mr-3"></i>
+                        Descargar Ahora en Google Play
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 text-white font-bold text-xl mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="smartphone" class="text-white w-5 h-5"></i>
+                        </div>
+                        <span>Innova<span class="text-primary-400">Apps</span></span>
+                    </div>
+                    <p class="text-slate-400 mb-6 max-w-sm">
+                        Desarrollamos el futuro a través de aplicaciones móviles innovadoras. 
+                        Calidad, diseño y rendimiento en cada línea de código.
+                    </p>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Contacto</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center text-slate-400">
+                            <i data-lucide="mail" class="w-5 h-5 mr-3 text-primary-500"></i>
+                            <span>innovaapps.co@gmail.com</span>
+                        </li>
+                        <li class="flex items-center text-slate-400">
+                            <i data-lucide="globe" class="w-5 h-5 mr-3 text-primary-500"></i>
+                            <span>innovaapps.surge.sh</span>
+                        </li>
+                        <li class="flex items-center text-slate-400">
+                            <i data-lucide="map-pin" class="w-5 h-5 mr-3 text-primary-500"></i>
+                            <span>Norte de Santander, CO</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h3 class="text-white font-semibold mb-4">Empresa</h3>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="../index.html" class="hover:text-primary-400 transition-colors">Inicio</a></li>
+                        <li><a href="../index.html#about" class="hover:text-primary-400 transition-colors">Sobre Nosotros</a></li>
+                        <li><a href="../index.html#apps" class="hover:text-primary-400 transition-colors">Portafolio</a></li>
+                        <li><a href="../politica_privacidad.html" class="hover:text-primary-400 transition-colors">Política de Privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-slate-500 text-sm mb-4 md:mb-0" id="current-year">
+                    &copy; 2026 Innova Apps. Todos los derechos reservados.
+                </p>
+                <div class="flex space-x-6 text-sm text-slate-500">
+                    <a href="../terminos.html" class="hover:text-white transition-colors">Términos</a>
+                    <a href="../politica_privacidad.html" class="hover:text-white transition-colors">Privacidad</a>
+                    <a href="../cookies.html" class="hover:text-white transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // Inicializar iconos de Lucide
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+        // Año dinámico en footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentYear = new Date().getFullYear();
+            const yearElement = document.getElementById('current-year');
+            if (yearElement) {
+                yearElement.textContent = `© ${currentYear} Innova Apps. Todos los derechos reservados.`;
+            }
+        });
+    </script>
+</body>
+</html>
