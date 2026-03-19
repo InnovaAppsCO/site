@@ -6,7 +6,7 @@ const APPS_DATA = [
       shortDescription: 'Realiza conversiones exactas entre Bolívares (Bs), Dólares (USD), Euros (EUR) y USDT en segundos..',
       category: 'Productividad',
       rating: 4.9,
-      downloads: '10+',
+      downloads: '50+',
       imageUrl: 'img/img1.png',
       UrlApp: 'Mi_Tasa_Binance/index.html',
       playStoreUrl: 'https://play.google.com/store/apps/details?id=com.dolar.tasa_binance',
